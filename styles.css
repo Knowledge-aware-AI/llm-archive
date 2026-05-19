@@ -433,7 +433,7 @@ input[type="range"] {
 .prompt-list {
   display: grid;
   gap: 8px;
-  max-height: min(calc(100vh - 278px), calc((52px * 10) + (8px * 9)));
+  max-height: 592px;
   overflow: auto;
 }
 
