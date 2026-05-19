@@ -662,10 +662,6 @@ input[type="range"] {
   background: var(--accent-dark);
 }
 
-.statistics-family {
-  width: min(280px, 100%);
-}
-
 .chart-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

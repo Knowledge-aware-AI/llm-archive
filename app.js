@@ -18,7 +18,6 @@ const elements = {
   contentGrid: document.querySelector(".content-grid"),
   statisticsView: document.querySelector(".statistics-view"),
   datasetView: document.querySelector(".dataset-view"),
-  statisticsFamilySelect: document.querySelector("#statisticsFamilySelect"),
   chartGrid: document.querySelector("#chartGrid"),
   promptSearch: document.querySelector("#promptSearch"),
   tagList: document.querySelector("#tagList"),
@@ -145,7 +144,6 @@ function populateFamilySelect(select) {
 
 function renderControls() {
   populateFamilySelect(elements.familySelect);
-  populateFamilySelect(elements.statisticsFamilySelect);
 
   const models = getModels();
   elements.modelPanel.style.setProperty("--model-count", String(Math.max(models.length, 1)));
@@ -350,7 +348,6 @@ function renderStatistics() {
     },
   ];
 
-  elements.statisticsFamilySelect.value = state.family;
   elements.chartGrid.innerHTML = charts.map((chart) => renderChartCard(chart, models)).join("");
 }
 
@@ -534,14 +531,6 @@ elements.clearTags.addEventListener("click", () => {
 
 elements.familySelect.addEventListener("change", () => {
   state.family = elements.familySelect.value;
-  state.modelIndex = 0;
-  renderCurrent();
-  renderStatistics();
-  loadResponse();
-});
-
-elements.statisticsFamilySelect.addEventListener("change", () => {
-  state.family = elements.statisticsFamilySelect.value;
   state.modelIndex = 0;
   renderCurrent();
   renderStatistics();
