@@ -215,10 +215,11 @@ h1 {
 .slider-field-wide {
   --model-marker-width: 92px;
   --model-gap: 6px;
+  --model-track-inset: 14px;
   flex: 0 1 auto;
   width: min(
     100%,
-    calc((var(--model-count) * var(--model-marker-width)) + ((var(--model-count) - 1) * var(--model-gap)) + 24px)
+    calc((var(--model-count) * var(--model-marker-width)) + ((var(--model-count) - 1) * var(--model-gap)) + (var(--model-track-inset) * 2) + 24px)
   );
 }
 
@@ -324,9 +325,11 @@ input[type="range"] {
 }
 
 .model-track {
+  box-sizing: border-box;
   width: 100%;
   min-width: min(100%, var(--model-marker-width));
-  overflow: hidden;
+  overflow: visible;
+  padding-inline: var(--model-track-inset);
 }
 
 .model-track input[type="range"] {
