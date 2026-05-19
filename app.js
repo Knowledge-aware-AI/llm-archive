@@ -25,6 +25,7 @@ const elements = {
   clearTags: document.querySelector("#clearTags"),
   promptMatchCount: document.querySelector("#promptMatchCount"),
   familySelect: document.querySelector("#familySelect"),
+  modelTrack: document.querySelector("#modelTrack"),
   modelSlider: document.querySelector("#modelSlider"),
   timeline: document.querySelector("#timeline"),
   modelLabel: document.querySelector("#modelLabel"),
@@ -146,6 +147,7 @@ function renderControls() {
   populateFamilySelect(elements.statisticsFamilySelect);
 
   const models = getModels();
+  elements.modelTrack.style.setProperty("--model-count", String(Math.max(models.length, 1)));
   elements.modelSlider.max = String(Math.max(models.length - 1, 0));
   elements.modelSlider.value = String(state.modelIndex);
   elements.modelSlider.disabled = models.length <= 1;
