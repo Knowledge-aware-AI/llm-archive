@@ -433,7 +433,7 @@ input[type="range"] {
 .prompt-list {
   display: grid;
   gap: 8px;
-  max-height: calc(100vh - 278px);
+  max-height: min(calc(100vh - 278px), calc((52px * 10) + (8px * 9)));
   overflow: auto;
 }
 
@@ -773,11 +773,6 @@ input[type="range"] {
     max-height: none;
   }
 
-  .prompt-list {
-    max-height: calc((52px * 10) + (8px * 9));
-    overflow: auto;
-  }
-
   .response-text {
     min-height: 420px;
   }
@@ -834,7 +829,7 @@ input[type="range"] {
   }
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1600px) {
   .controls {
     grid-template-columns: 1fr;
     align-items: stretch;
