@@ -24,16 +24,12 @@
           Frontier LLMs are among the defining knowledge technologies of our time. Yet commercial models change so
           rapidly that many disappear from public view, perhaps one day to be regarded like lost papyrus manuscripts or
           the missing NASA moon landing tapes.
-        </p>
-        <p>
           Our long-term vision is to build
           <a href="https://zenodo.org/records/19910437" target="_blank" rel="noreferrer">epistemic twins</a>:
           persistent, comprehensive, human-readable approximations of LLMs. But creating such twins can cost tens of
           thousands of dollars, and the clock is ticking. LLM-archive is a sample-oriented public archive of LLM
           knowledge and behavior, similar in spirit to the Wayback Machine for websites or a paleontological collection
           for extinct species.
-        </p>
-        <p>
           We hope it will become a useful resource for future historians, AI researchers, and anyone trying to
           understand how these systems knew, reasoned, and behaved.
         </p>
@@ -44,32 +40,34 @@
         </p>
       </section>
 
-      <nav class="view-switch" aria-label="Archive view">
-        <button class="active" id="responsesViewButton" type="button" aria-pressed="true">Responses</button>
-        <button id="statisticsViewButton" type="button" aria-pressed="false">Statistics</button>
-        <button id="datasetViewButton" type="button" aria-pressed="false">Dataset</button>
-      </nav>
+      <div class="primary-toolbar">
+        <nav class="view-switch" aria-label="Archive view">
+          <button class="active" id="responsesViewButton" type="button" aria-pressed="true">Responses</button>
+          <button id="statisticsViewButton" type="button" aria-pressed="false">Statistics</button>
+          <button id="datasetViewButton" type="button" aria-pressed="false">Dataset</button>
+        </nav>
 
-      <section class="controls response-view" aria-label="Response controls">
-        <label class="field compact">
-          <span>Model family</span>
-          <select id="familySelect">
-            <option value="openai_flagship">OpenAI Flagship</option>
-            <option value="openai_commodity">OpenAI Commodity</option>
-          </select>
-        </label>
+        <section class="controls response-view" aria-label="Response controls">
+          <label class="field compact family-field">
+            <span>Model family</span>
+            <select id="familySelect">
+              <option value="openai_flagship">OpenAI Flagship</option>
+              <option value="openai_commodity">OpenAI Commodity</option>
+            </select>
+          </label>
 
-        <div class="slider-field slider-field-wide">
-          <div class="slider-head">
-            <span>Model order by approx. release</span>
-            <strong id="modelLabel">-</strong>
+          <div class="slider-field slider-field-wide">
+            <div class="slider-head">
+              <span>Model order by approx. release</span>
+              <strong id="modelLabel">-</strong>
+            </div>
+            <div class="model-track" id="modelTrack">
+              <input id="modelSlider" type="range" min="0" max="0" value="0">
+              <div class="timeline" id="timeline"></div>
+            </div>
           </div>
-          <div class="model-track" id="modelTrack">
-            <input id="modelSlider" type="range" min="0" max="0" value="0">
-            <div class="timeline" id="timeline"></div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <section class="content-grid">
         <aside class="selector-panel" aria-label="Prompt selectors">

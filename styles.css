@@ -38,13 +38,12 @@ input {
 .shell {
   width: min(1800px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 18px 0 28px;
+  padding: 0 0 6px;
 }
 
 .topbar,
-.controls,
 .content-grid,
-.view-switch,
+.primary-toolbar,
 .statistics-view,
 .dataset-view {
   width: 100%;
@@ -54,8 +53,8 @@ input {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 14px;
+  gap: 12px;
+  margin-bottom: 4px;
 }
 
 .brand {
@@ -126,20 +125,20 @@ h1 {
 }
 
 .intro-panel {
-  margin-bottom: 18px;
+  margin-bottom: 4px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.84);
-  padding: 18px 20px;
+  padding: 8px 10px;
   box-shadow: 0 8px 24px rgba(24, 32, 39, 0.04);
 }
 
 .intro-panel p {
-  margin: 0 0 12px;
+  margin: 0 0 6px;
   max-width: none;
   color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 0.94rem;
+  line-height: 1.42;
 }
 
 .intro-panel p:last-child {
@@ -149,7 +148,7 @@ h1 {
 .intro-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 12px;
 }
 
 .intro-links a {
@@ -159,13 +158,20 @@ h1 {
   text-underline-offset: 2px;
 }
 
+.primary-toolbar {
+  display: flex;
+  align-items: start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
 .view-switch {
   display: inline-flex;
+  flex: 0 0 auto;
   max-width: 100%;
   width: auto;
   overflow-x: auto;
   gap: 4px;
-  margin-bottom: 16px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.74);
@@ -194,15 +200,21 @@ h1 {
 }
 
 .controls {
-  display: grid;
-  grid-template-columns: 190px minmax(0, 1fr);
-  gap: 12px;
-  align-items: end;
-  margin-bottom: 16px;
+  display: flex;
+  align-items: stretch;
+  flex: 0 1 auto;
+  gap: 10px;
+  min-width: 0;
 }
 
 .slider-field-wide {
-  grid-column: 2;
+  --model-marker-width: 124px;
+  --model-gap: 6px;
+  flex: 0 1 auto;
+  width: min(
+    100%,
+    calc((var(--model-count) * var(--model-marker-width)) + ((var(--model-count) - 1) * var(--model-gap)) + 24px)
+  );
 }
 
 .field,
@@ -213,6 +225,11 @@ h1 {
   background: rgba(255, 255, 255, 0.82);
   padding: 12px;
   box-shadow: 0 8px 24px rgba(24, 32, 39, 0.04);
+}
+
+.family-field {
+  width: 210px;
+  flex: 0 0 210px;
 }
 
 .field > span,
@@ -228,7 +245,7 @@ h1 {
 
 select {
   width: 100%;
-  min-height: 42px;
+  min-height: 36px;
   border: 1px solid var(--line);
   border-radius: 6px;
   background: #fff;
@@ -289,9 +306,9 @@ input[type="search"] {
 
 .slider-head strong {
   overflow: hidden;
-  max-width: 58%;
+  max-width: none;
   color: var(--ink);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -302,12 +319,7 @@ input[type="range"] {
 }
 
 .model-track {
-  --model-marker-width: 124px;
-  --model-gap: 6px;
-  width: min(
-    100%,
-    calc((var(--model-count) * var(--model-marker-width)) + ((var(--model-count) - 1) * var(--model-gap)))
-  );
+  width: 100%;
   min-width: min(100%, var(--model-marker-width));
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -325,7 +337,7 @@ input[type="range"] {
   grid-auto-columns: var(--model-marker-width);
   gap: var(--model-gap);
   margin-top: 10px;
-  padding: 6px 3px 8px;
+  padding: 6px 0 8px;
 }
 
 .timeline-marker {
@@ -335,7 +347,7 @@ input[type="range"] {
   min-height: 34px;
   border: 0;
   border-radius: 7px;
-  background: #d1d9d8;
+  background: #eef2f1;
   color: #334149;
   cursor: pointer;
   padding: 5px 4px;
@@ -349,17 +361,10 @@ input[type="range"] {
   text-align: center;
 }
 
-.timeline-marker[data-status="ready"] {
-  background: color-mix(in srgb, var(--ready) 78%, white);
-}
-
-.timeline-marker[data-status="error"] {
-  background: color-mix(in srgb, var(--error) 78%, white);
-}
-
 .timeline-marker.active {
   outline: 3px solid rgba(15, 118, 110, 0.24);
   outline-offset: 2px;
+  background: #dde9e7;
 }
 
 .content-grid {
@@ -845,22 +850,34 @@ input[type="range"] {
   }
 }
 
-@media (max-width: 1600px) {
+@media (max-width: 1180px) {
+  .primary-toolbar {
+    flex-wrap: wrap;
+  }
+
   .controls {
-    grid-template-columns: 1fr;
-    align-items: stretch;
+    flex: 1 1 100%;
   }
 
   .slider-field-wide {
-    grid-column: 1;
+    max-width: 100%;
   }
 
-  .timeline {
+  .slider-field-wide {
     --model-marker-width: 112px;
   }
 }
 
 @media (max-width: 520px) {
+  .controls {
+    flex-direction: column;
+  }
+
+  .family-field {
+    width: 100%;
+    flex-basis: auto;
+  }
+
   .view-switch {
     display: grid;
     grid-template-columns: 1fr;

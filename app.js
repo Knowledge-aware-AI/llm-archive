@@ -25,6 +25,7 @@ const elements = {
   clearTags: document.querySelector("#clearTags"),
   promptMatchCount: document.querySelector("#promptMatchCount"),
   familySelect: document.querySelector("#familySelect"),
+  modelPanel: document.querySelector(".slider-field-wide"),
   modelTrack: document.querySelector("#modelTrack"),
   modelSlider: document.querySelector("#modelSlider"),
   timeline: document.querySelector("#timeline"),
@@ -147,6 +148,7 @@ function renderControls() {
   populateFamilySelect(elements.statisticsFamilySelect);
 
   const models = getModels();
+  elements.modelPanel.style.setProperty("--model-count", String(Math.max(models.length, 1)));
   elements.modelTrack.style.setProperty("--model-count", String(Math.max(models.length, 1)));
   elements.modelSlider.max = String(Math.max(models.length - 1, 0));
   elements.modelSlider.value = String(state.modelIndex);
@@ -192,7 +194,6 @@ function renderTimeline(models) {
     marker.className = `timeline-marker${index === state.modelIndex ? " active" : ""}`;
     marker.title = `${model.label} - approx. ${model.releaseDate}`;
     marker.setAttribute("aria-label", `${model.label}, approximate release ${model.releaseDate}`);
-    marker.dataset.status = statusForModel(model);
     marker.innerHTML = `<span>${escapeHtml(model.releaseDate)}</span>`;
     marker.addEventListener("click", () => {
       state.modelIndex = index;
