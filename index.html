@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LLM Response Timeline</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <img class="brand-logo" src="assets/llm-archive-archeologist-banner.png" alt="">
+          <div class="brand-copy">
+            <h1>LLM-Archive</h1>
+            <p class="tagline">We archive the voices the companies erase.</p>
+          </div>
+        </div>
+        <div class="status-pill" id="catalogStatus">Loading</div>
+      </header>
+
+      <section class="intro-panel" aria-label="Archive mission">
+        <p>
+          Frontier LLMs are among the defining knowledge technologies of our time. Yet commercial models change so
+          rapidly that many disappear from public view, perhaps one day to be regarded like lost papyrus manuscripts or
+          the missing NASA moon landing tapes.
+        </p>
+        <p>
+          Our long-term vision is to build
+          <a href="https://zenodo.org/records/19910437" target="_blank" rel="noreferrer">epistemic twins</a>:
+          persistent, comprehensive, human-readable approximations of LLMs. But creating such twins can cost tens of
+          thousands of dollars, and the clock is ticking. LLM-archive is a sample-oriented public archive of LLM
+          knowledge and behavior, similar in spirit to the Wayback Machine for websites or a paleontological collection
+          for extinct species.
+        </p>
+        <p>
+          We hope it will become a useful resource for future historians, AI researchers, and anyone trying to
+          understand how these systems knew, reasoned, and behaved.
+        </p>
+        <p class="intro-links">
+          <a href="https://zenodo.org/records/19910437" target="_blank" rel="noreferrer">Epistemic twins</a>
+          <a href="https://gptkb.org" target="_blank" rel="noreferrer">GPTKB</a>
+          <a href="https://llmpedia.net" target="_blank" rel="noreferrer">LLMpedia</a>
+        </p>
+      </section>
+
+      <nav class="view-switch" aria-label="Archive view">
+        <button class="active" id="responsesViewButton" type="button" aria-pressed="true">Responses</button>
+        <button id="statisticsViewButton" type="button" aria-pressed="false">Statistics</button>
+        <button id="datasetViewButton" type="button" aria-pressed="false">Dataset</button>
+      </nav>
+
+      <section class="controls response-view" aria-label="Response controls">
+        <label class="field compact">
+          <span>Model family</span>
+          <select id="familySelect">
+            <option value="openai_flagship">OpenAI Flagship</option>
+            <option value="openai_commodity">OpenAI Commodity</option>
+          </select>
+        </label>
+
+        <div class="slider-field slider-field-wide">
+          <div class="slider-head">
+            <span>Model order by approx. release</span>
+            <strong id="modelLabel">-</strong>
+          </div>
+          <input id="modelSlider" type="range" min="0" max="0" value="0">
+          <div class="timeline" id="timeline"></div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <aside class="selector-panel" aria-label="Prompt selectors">
+          <label class="field stacked-field">
+            <span>Search prompts</span>
+            <input id="promptSearch" type="search" placeholder="Type to narrow prompts">
+          </label>
+
+          <section class="field stacked-field tag-browser" aria-label="Tag filters">
+            <div class="section-head">
+              <span>Tags</span>
+              <button id="clearTags" type="button">Clear</button>
+            </div>
+            <div class="tag-list" id="tagList"></div>
+          </section>
+        </aside>
+
+        <section class="field prompt-browser" aria-label="Prompt list">
+          <div class="section-head">
+            <span>Prompts</span>
+            <strong id="promptMatchCount">0 matches</strong>
+          </div>
+          <div class="prompt-list" id="promptList"></div>
+        </section>
+
+        <article class="response-panel">
+          <div class="response-head">
+            <div>
+              <p id="promptTags">-</p>
+              <h2 id="promptText">-</h2>
+            </div>
+          </div>
+
+          <pre id="responseText" class="response-text">Loading responses...</pre>
+        </article>
+      </section>
+
+      <section class="statistics-view hidden" aria-label="Model statistics">
+        <label class="field compact statistics-family">
+          <span>Model family</span>
+          <select id="statisticsFamilySelect">
+            <option value="openai_flagship">OpenAI Flagship</option>
+            <option value="openai_commodity">OpenAI Commodity</option>
+          </select>
+        </label>
+
+        <div class="chart-grid" id="chartGrid"></div>
+      </section>
+
+      <section class="dataset-view hidden" aria-label="Dataset download">
+        <article class="dataset-card">
+          <div>
+            <p class="eyebrow">Dataset archive</p>
+            <h2>Prompts and responses</h2>
+            <p>
+              Download the current snapshot as a ZIP archive containing the prompt set and collected model responses.
+            </p>
+          </div>
+          <a class="download-button" href="prompts+responses.zip" download>Download ZIP</a>
+        </article>
+      </section>
+    </main>
+
+    <script src="data/archive-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
