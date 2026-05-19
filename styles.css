@@ -769,9 +769,13 @@ input[type="range"] {
     grid-template-columns: 1fr;
   }
 
-  .prompt-list,
   .response-text {
     max-height: none;
+  }
+
+  .prompt-list {
+    max-height: calc((52px * 10) + (8px * 9));
+    overflow: auto;
   }
 
   .response-text {
