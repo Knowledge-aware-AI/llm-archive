@@ -41,13 +41,13 @@
       </section>
 
       <div class="primary-toolbar">
-        <nav class="view-switch" aria-label="Archive view">
-          <button class="active" id="responsesViewButton" type="button" aria-pressed="true">Responses</button>
-          <button id="statisticsViewButton" type="button" aria-pressed="false">Statistics</button>
-          <button id="datasetViewButton" type="button" aria-pressed="false">Dataset</button>
-        </nav>
+        <div class="toolbar-menu">
+          <nav class="view-switch" aria-label="Archive view">
+            <button class="active" id="responsesViewButton" type="button" aria-pressed="true">Responses</button>
+            <button id="statisticsViewButton" type="button" aria-pressed="false">Statistics</button>
+            <button id="datasetViewButton" type="button" aria-pressed="false">Dataset</button>
+          </nav>
 
-        <section class="controls response-view" aria-label="Response controls">
           <label class="field compact family-field">
             <span>Model family</span>
             <select id="familySelect">
@@ -55,7 +55,9 @@
               <option value="openai_commodity">OpenAI Commodity</option>
             </select>
           </label>
+        </div>
 
+        <section class="controls response-view" aria-label="Response controls">
           <div class="slider-field slider-field-wide">
             <div class="slider-head">
               <span>Model order by approx. release</span>

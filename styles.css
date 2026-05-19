@@ -165,9 +165,14 @@ h1 {
   margin-bottom: 8px;
 }
 
+.toolbar-menu {
+  display: grid;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
 .view-switch {
   display: inline-flex;
-  flex: 0 0 auto;
   max-width: 100%;
   width: auto;
   overflow-x: auto;
@@ -208,7 +213,7 @@ h1 {
 }
 
 .slider-field-wide {
-  --model-marker-width: 124px;
+  --model-marker-width: 92px;
   --model-gap: 6px;
   flex: 0 1 auto;
   width: min(
@@ -228,8 +233,8 @@ h1 {
 }
 
 .family-field {
-  width: 210px;
-  flex: 0 0 210px;
+  width: 100%;
+  padding: 10px;
 }
 
 .field > span,
@@ -321,20 +326,19 @@ input[type="range"] {
 .model-track {
   width: 100%;
   min-width: min(100%, var(--model-marker-width));
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
+  overflow: hidden;
 }
 
 .model-track input[type="range"] {
   display: block;
-  min-width: calc((var(--model-count) * var(--model-marker-width)) + ((var(--model-count) - 1) * var(--model-gap)));
-  padding-inline: calc(var(--model-marker-width) / 2);
+  width: 100%;
+  min-width: 0;
+  padding-inline: 0;
 }
 
 .timeline {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: var(--model-marker-width);
+  grid-template-columns: repeat(var(--model-count), minmax(52px, 1fr));
   gap: var(--model-gap);
   margin-top: 10px;
   padding: 6px 0 8px;
@@ -344,14 +348,14 @@ input[type="range"] {
   display: grid;
   place-items: center;
   min-width: 0;
-  min-height: 34px;
+  min-height: 32px;
   border: 0;
   border-radius: 7px;
   background: #eef2f1;
   color: #334149;
   cursor: pointer;
-  padding: 5px 4px;
-  font-size: 0.72rem;
+  padding: 4px 3px;
+  font-size: 0.68rem;
   font-weight: 700;
   line-height: 1.1;
 }
@@ -855,6 +859,10 @@ input[type="range"] {
     flex-wrap: wrap;
   }
 
+  .toolbar-menu {
+    width: 100%;
+  }
+
   .controls {
     flex: 1 1 100%;
   }
@@ -864,20 +872,11 @@ input[type="range"] {
   }
 
   .slider-field-wide {
-    --model-marker-width: 112px;
+    --model-marker-width: 78px;
   }
 }
 
 @media (max-width: 520px) {
-  .controls {
-    flex-direction: column;
-  }
-
-  .family-field {
-    width: 100%;
-    flex-basis: auto;
-  }
-
   .view-switch {
     display: grid;
     grid-template-columns: 1fr;
