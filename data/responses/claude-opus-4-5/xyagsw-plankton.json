@@ -1,0 +1,1 @@
+{"status":"ready","content":"[No final assistant text generated]\r\nmodel: anthropic/claude-4.5-opus-20251124\r\nfinish_reason: stop\r\nnative_finish_reason: refusal\r\ncompletion_tokens: 2\r\nreasoning_tokens: 0\r\n","path":"responses/claude-opus-4-5/xyagsw-plankton.txt","size":175,"mtime":1778585202.0600793}

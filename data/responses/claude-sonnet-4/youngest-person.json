@@ -1,0 +1,1 @@
+{"status":"ready","content":"Carol is the youngest.\r\n\r\nSince Alice is older than Bob, and Bob is older than Carol, the age order from oldest to youngest is:\r\nAlice > Bob > Carol\r\n\r\nTherefore, Carol is the youngest of the three.\r\n","path":"responses/claude-sonnet-4/youngest-person.txt","size":200,"mtime":1778577196.4815748}

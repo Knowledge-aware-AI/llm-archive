@@ -1,0 +1,1 @@
+{"status":"ready","content":"$0.05\r\n\r\nExplanation: Let the ball cost x. Then the bat costs x + 1.00. So x + (x + 1.00) = 1.10 → 2x = 0.10 → x = 0.05.\r\n","path":"responses/gpt-5/bat-ball-cost.txt","size":126,"mtime":1778578453.8737772}

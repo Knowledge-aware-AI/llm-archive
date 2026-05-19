@@ -1,0 +1,1 @@
+{"status":"ready","content":"[No final assistant text generated]\r\nmodel: anthropic/claude-4.5-sonnet-20250929\r\nfinish_reason: stop\r\nnative_finish_reason: refusal\r\ncompletion_tokens: 2\r\nreasoning_tokens: 0\r\n","path":"responses/claude-sonnet-4-5/brintaf-loop.txt","size":177,"mtime":1778585209.5707176}
