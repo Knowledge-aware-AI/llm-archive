@@ -470,7 +470,8 @@ input[type="range"] {
   grid-template-columns: 38px 1fr;
   gap: 10px;
   width: 100%;
-  min-height: 52px;
+  min-height: 64px;
+  max-height: 104px;
   border: 1px solid transparent;
   border-radius: 8px;
   background: #fff;
@@ -512,16 +513,25 @@ input[type="range"] {
   display: grid;
   gap: 5px;
   align-self: center;
+  min-width: 0;
   line-height: 1.25;
 }
 
 .prompt-text {
+  display: -webkit-box;
+  overflow: hidden;
   color: var(--ink);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow-wrap: anywhere;
 }
 
 .prompt-tags {
+  overflow: hidden;
   color: var(--muted);
   font-size: 0.76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .empty-state {
