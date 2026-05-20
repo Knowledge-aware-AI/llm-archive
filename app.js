@@ -38,9 +38,45 @@ const elements = {
 };
 
 function initialView() {
-  if (window.location.hash === "#statistics") return "statistics";
-  if (window.location.hash === "#dataset") return "dataset";
-  return "responses";
+  return parseHash().view;
+}
+
+function parseHash() {
+  const rawHash = window.location.hash.replace(/^#/, "");
+  if (rawHash === "statistics" || rawHash === "dataset") {
+    return { view: rawHash, promptId: "" };
+  }
+
+  const params = new URLSearchParams(rawHash);
+  const view = params.get("view");
+  return {
+    view: view === "statistics" || view === "dataset" ? view : "responses",
+    promptId: params.get("prompt") || "",
+  };
+}
+
+function buildHash({ view = state.view, promptId = state.promptId } = {}) {
+  if (view === "statistics" || view === "dataset") return `#view=${view}`;
+  return promptId ? `#prompt=${encodeURIComponent(promptId)}` : window.location.pathname;
+}
+
+function applyHashState({ render = false } = {}) {
+  const { view, promptId } = parseHash();
+  state.view = view;
+
+  if (promptId && state.catalog?.prompts.some((prompt) => prompt.id === promptId)) {
+    state.promptId = promptId;
+    state.selectedTags = [];
+    state.promptSearch = "";
+    elements.promptSearch.value = "";
+  }
+
+  if (render) {
+    renderCurrent();
+    renderStatistics();
+    renderView();
+    loadResponse();
+  }
 }
 
 async function loadCatalog({ preservePrompt = true } = {}) {
@@ -64,8 +100,10 @@ async function loadCatalog({ preservePrompt = true } = {}) {
 
   const models = getModels();
   state.modelIndex = Math.min(state.modelIndex, Math.max(models.length - 1, 0));
+  const hashPromptId = parseHash().promptId;
+  applyHashState();
 
-  if (!preservePrompt || !state.catalog.prompts.some((prompt) => prompt.id === state.promptId)) {
+  if ((!preservePrompt && !hashPromptId) || !state.catalog.prompts.some((prompt) => prompt.id === state.promptId)) {
     state.promptId = getFilteredPrompts()[0]?.id ?? state.catalog.prompts[0]?.id ?? "";
   }
 
@@ -175,8 +213,7 @@ function renderView() {
 function setView(view, { updateHash = true } = {}) {
   state.view = view;
   if (updateHash) {
-    const hash = view === "responses" ? window.location.pathname : `#${view}`;
-    history.replaceState(null, "", hash);
+    history.replaceState(null, "", buildHash({ view }));
   }
   if (view === "statistics") {
     renderStatistics();
@@ -310,7 +347,10 @@ function renderPromptList(model, filteredPrompts) {
     `;
     button.addEventListener("click", () => {
       state.promptId = prompt.id;
+      state.view = "responses";
+      history.replaceState(null, "", buildHash({ view: "responses", promptId: prompt.id }));
       renderCurrent();
+      renderView();
       loadResponse();
     });
     elements.promptList.append(button);
@@ -517,7 +557,7 @@ elements.datasetViewButton.addEventListener("click", () => {
 });
 
 window.addEventListener("hashchange", () => {
-  setView(initialView(), { updateHash: false });
+  applyHashState({ render: true });
 });
 
 elements.clearTags.addEventListener("click", () => {
