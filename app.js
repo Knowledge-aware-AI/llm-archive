@@ -81,18 +81,12 @@ function applyHashState({ render = false } = {}) {
 
 async function loadCatalog({ preservePrompt = true } = {}) {
   elements.catalogStatus.textContent = "Loading snapshot";
-  const staticData = window.LLM_ARCHIVE_STATIC_DATA;
-  if (staticData) {
-    state.catalog = staticData.catalog;
-    state.statistics = staticData.statistics;
-  } else {
-    const [catalogResponse, statisticsResponse] = await Promise.all([
-      fetch("data/catalog.json"),
-      fetch("data/statistics.json"),
-    ]);
-    state.catalog = await catalogResponse.json();
-    state.statistics = await statisticsResponse.json();
-  }
+  const [catalogResponse, statisticsResponse] = await Promise.all([
+    fetch("data/catalog.json"),
+    fetch("data/statistics.json"),
+  ]);
+  state.catalog = await catalogResponse.json();
+  state.statistics = await statisticsResponse.json();
 
   if (!state.catalog.families[state.family]) {
     state.family = Object.keys(state.catalog.families)[0];
@@ -497,13 +491,6 @@ async function loadResponse() {
 
   setResponseStatus("Loading", "");
   elements.responseText.textContent = "";
-
-  const staticPayload = window.LLM_ARCHIVE_STATIC_DATA?.responses?.[`${model.slug}:${prompt.id}`];
-  if (staticPayload) {
-    setResponseStatus(staticPayload.status === "error" ? "Error file" : "Ready", staticPayload.status, staticPayload.path ?? "");
-    elements.responseText.textContent = staticPayload.content || "(empty response)";
-    return;
-  }
 
   const url = `data/responses/${encodeURIComponent(model.slug)}/${encodeURIComponent(prompt.id)}.json`;
   const response = await fetch(url);
