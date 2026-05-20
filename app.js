@@ -82,7 +82,7 @@ function applyHashState({ render = false } = {}) {
 async function loadCatalog({ preservePrompt = true } = {}) {
   elements.catalogStatus.textContent = "Loading snapshot";
   const [catalogResponse, statisticsResponse] = await Promise.all([
-    fetch("data/catalog.json"),
+    fetch("data/data.json"),
     fetch("data/statistics.json"),
   ]);
   state.catalog = await catalogResponse.json();
@@ -333,7 +333,7 @@ function renderPromptList(model, filteredPrompts) {
     button.className = `prompt-item${prompt.id === state.promptId ? " active" : ""}`;
     button.dataset.status = status;
     button.innerHTML = `
-      <span class="prompt-number">${String(prompt.displayIndex ?? prompt.index).padStart(2, "0")}</span>
+      <span class="prompt-number">${String(prompt.index).padStart(2, "0")}</span>
       <span class="prompt-copy">
         <span class="prompt-text">${escapeHtml(prompt.text)}</span>
         <span class="prompt-tags">${escapeHtml([prompt.id, ...(prompt.tags ?? []).map(formatTag)].join(" · "))}</span>
@@ -492,7 +492,7 @@ async function loadResponse() {
   setResponseStatus("Loading", "");
   elements.responseText.textContent = "";
 
-  const url = `data/responses/${encodeURIComponent(model.slug)}/${encodeURIComponent(prompt.id)}.json`;
+  const url = `data/responses/${encodeURIComponent(model.id)}/${encodeURIComponent(prompt.id)}.json`;
   const response = await fetch(url);
 
   if (response.status === 404) {

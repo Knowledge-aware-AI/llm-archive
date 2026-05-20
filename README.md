@@ -14,6 +14,6 @@ For a project page, the app is safe to serve from a subpath such as `/repository
 
 ## Refresh
 
-If prompts, model chains, responses, or analysis metrics change, regenerate this folder from the repository root so `data/catalog.json`, `data/statistics.json`, and `data/responses/` match the latest snapshot.
+If prompts, model chains, responses, or analysis metrics change, regenerate this folder from the repository root so `data/data.json`, `data/statistics.json`, and `data/responses/` match the latest snapshot.
 
 Regenerate `data/archive-data.js` at the same time if you want double-click local viewing to keep working.
