@@ -1,0 +1,1 @@
+{"status":"ready","content":"Model label: Qwen3 Max\r\nModel ID: qwen/qwen3-max\r\nQuery: Multiply 123456789123456789 by 987654321987654321 exactly.\r\nError: Connection error.\r\n","path":"responses/qwen3-max/huge-multiplication.txt","size":143,"mtime":1779343648}

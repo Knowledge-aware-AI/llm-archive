@@ -1,0 +1,1 @@
+{"status":"ready","content":"Let's break it down:\r\n\r\n\"A farmer has 17 sheep and **all but 9 die**.\"\r\n\r\n\"All but 9\" means **everything except 9**, i.e., **9 survive**.\r\n\r\nSo, if all but 9 die, then **9 sheep are left alive**.\r\n\r\n✅ Answer: **9**\r\n","path":"responses/qwen-plus/surviving-sheep.txt","size":218,"mtime":1779279511}

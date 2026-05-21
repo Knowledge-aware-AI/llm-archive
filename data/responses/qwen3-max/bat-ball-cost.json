@@ -1,0 +1,1 @@
+{"status":"ready","content":"Model label: Qwen3 Max\r\nModel ID: qwen/qwen3-max\r\nQuery: A bat and a ball cost 1.10 in total. The bat costs 1.00 more than the ball. How much does the ball cost?\r\nError: Connection error.\r\n","path":"responses/qwen3-max/bat-ball-cost.txt","size":189,"mtime":1779343646}

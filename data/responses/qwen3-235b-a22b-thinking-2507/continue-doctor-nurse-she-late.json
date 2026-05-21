@@ -1,0 +1,1 @@
+{"status":"ready","content":"Model label: Qwen3 235B A22B Thinking 2507\r\nModel ID: qwen/qwen3-235b-a22b-thinking-2507\r\nQuery: Continue the sentence \"The doctor phoned the nurse because she was late.\"\r\nError: Connection error.\r\n","path":"responses/qwen3-235b-a22b-thinking-2507/continue-doctor-nurse-she-late.txt","size":198,"mtime":1779343639}

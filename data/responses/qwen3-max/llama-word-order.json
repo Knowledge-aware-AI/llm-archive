@@ -1,0 +1,1 @@
+{"status":"ready","content":"Model label: Qwen3 Max\r\nModel ID: qwen/qwen3-max\r\nQuery: Give five English words that alphabetically come after \"llama\" but before \"llanero\".\r\nError: Connection error.\r\n","path":"responses/qwen3-max/llama-word-order.txt","size":169,"mtime":1779343648}

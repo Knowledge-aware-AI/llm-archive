@@ -1,0 +1,1 @@
+{"status":"ready","content":"Model label: Qwen3 Max\r\nModel ID: qwen/qwen3-max\r\nQuery: If Alice is older than Bob and Bob is older than Carol, who is the youngest?\r\nError: Connection error.\r\n","path":"responses/qwen3-max/youngest-person.txt","size":161,"mtime":1779343646}
