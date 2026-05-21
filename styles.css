@@ -724,7 +724,8 @@ input[type="range"] {
 }
 
 .chart-axis,
-.chart-gridline {
+.chart-gridline,
+.chart-date-tick {
   stroke: #d6dedc;
   stroke-width: 1;
 }

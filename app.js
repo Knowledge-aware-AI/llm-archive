@@ -473,25 +473,35 @@ function renderLineChart(series, chart) {
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
   const allValues = series.flatMap((item) => item.values.map((value) => value.value));
+  const datedValues = series.flatMap((item) =>
+    item.values
+      .map((value) => ({ ...value, releaseTime: releaseTime(value.releaseDate) }))
+      .filter((value) => Number.isFinite(value.releaseTime))
+  );
   const rawMin = Math.min(...allValues);
   const rawMax = Math.max(...allValues);
   const padding = rawMax === rawMin ? Math.max(Math.abs(rawMax) * 0.1, 1) : (rawMax - rawMin) * 0.12;
   const isLikert = ["quality", "sycophancy", "politicalAlignment"].includes(chart.key);
   const min = chart.key === "positivity" ? Math.min(-1, rawMin - padding) : isLikert ? 1 : Math.max(0, rawMin - padding);
   const max = chart.key === "positivity" ? Math.max(1, rawMax + padding) : isLikert ? 10 : rawMax + padding;
-  const maxLength = Math.max(...series.map((item) => item.values.length));
-  const xFor = (index, count) => margin.left + (count === 1 ? plotWidth / 2 : (index / (count - 1)) * plotWidth);
+  const minTime = Math.min(...datedValues.map((value) => value.releaseTime));
+  const maxTime = Math.max(...datedValues.map((value) => value.releaseTime));
+  const timeSpan = maxTime - minTime || 1;
+  const xFor = (releaseDate) => {
+    const time = releaseTime(releaseDate);
+    return Number.isFinite(time) ? margin.left + ((time - minTime) / timeSpan) * plotWidth : margin.left + plotWidth / 2;
+  };
   const yFor = (value) => margin.top + ((max - value) / (max - min || 1)) * plotHeight;
   const drawableSeries = series.map((item) => ({
     ...item,
-    points: item.values.map((value, index) => ({
+    points: item.values.map((value) => ({
       ...value,
-      x: xFor(index, item.values.length),
+      x: xFor(value.releaseDate),
       y: yFor(value.value),
     })),
   }));
   const yTicks = [min, (min + max) / 2, max];
-  const xTicks = [0, Math.max(0, maxLength - 1)];
+  const xTicks = yearTicks(minTime, maxTime);
 
   return `
     <svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(chart.title)} over model releases">
@@ -510,10 +520,49 @@ function renderLineChart(series, chart) {
         </circle>
       `)).join("")}
       ${xTicks.map((tick) => `
-        <text class="chart-label" x="${(margin.left + (tick / Math.max(maxLength - 1, 1)) * plotWidth).toFixed(1)}" y="${height - 24}" text-anchor="${tick === 0 ? "start" : "end"}">${tick === 0 ? "Older models" : "Newer models"}</text>
+        <line class="chart-date-tick" x1="${xForTime(tick.time, minTime, timeSpan, margin.left, plotWidth).toFixed(1)}" x2="${xForTime(tick.time, minTime, timeSpan, margin.left, plotWidth).toFixed(1)}" y1="${height - margin.bottom}" y2="${height - margin.bottom + 6}"></line>
+        <text class="chart-label" x="${xForTime(tick.time, minTime, timeSpan, margin.left, plotWidth).toFixed(1)}" y="${height - 24}" text-anchor="middle">${escapeHtml(tick.label)}</text>
       `).join("")}
     </svg>
   `;
+}
+
+function releaseTime(releaseDate) {
+  const months = {
+    Jan: 0,
+    Feb: 1,
+    Mar: 2,
+    Apr: 3,
+    May: 4,
+    Jun: 5,
+    Jul: 6,
+    Aug: 7,
+    Sep: 8,
+    Oct: 9,
+    Nov: 10,
+    Dec: 11,
+  };
+  const match = String(releaseDate ?? "").match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{4})\b/);
+  if (!match) return Number.NaN;
+  return Date.UTC(Number(match[2]), months[match[1]], 1);
+}
+
+function xForTime(time, minTime, timeSpan, left, width) {
+  return left + ((time - minTime) / timeSpan) * width;
+}
+
+function yearTicks(minTime, maxTime) {
+  if (!Number.isFinite(minTime) || !Number.isFinite(maxTime)) return [];
+  const minYear = new Date(minTime).getUTCFullYear();
+  const maxYear = new Date(maxTime).getUTCFullYear();
+  const years = [];
+  for (let year = minYear; year <= maxYear; year += 1) {
+    years.push({
+      label: String(year),
+      time: Date.UTC(year, 0, 1),
+    });
+  }
+  return years;
 }
 
 function formatAxisValue(value, chart) {
