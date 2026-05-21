@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\nimport sys\r\ninput = sys.stdin.read\r\ndata = input().strip()\r\nN = int(data)\r\nresult = str(N) * N\r\nprint(result)\r\n```\r\n","path":"responses/mistral-large-2411/livebench-097-coding.txt","size":127,"mtime":1779370014}

@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\ncurr -= nums[(left+right)//2] - nums[left]\r\n            left += 1\r\n        result = max(result, right - left + 1)\r\n        return result\r\n```\r\n","path":"responses/gemini-3-1-flash-lite-preview/livebench-014-coding.txt","size":154,"mtime":1779368269}

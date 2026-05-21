@@ -1,0 +1,1 @@
+{"status":"ready","content":"```\r\n                curr -= nums[left] - nums[(left + right) // 2]\r\n                left += 1\r\n        result = max(result, right - left + 1)\r\n    return result\r\n```\r\n","path":"responses/mistral-medium-3-1/livebench-014-coding.txt","size":168,"mtime":1779370489}

@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\n{\r\n    \"tweet_id\": \"a6oKqAbhiYE\",\r\n    \"airline\": \"gas\",\r\n    \"negativereason\": \"c2A+LJlP174\",\r\n    \"negativereason_confidence\": \"0.6753\",\r\n    \"airline_sentiment\": \"Can't Tell\"\r\n}\r\n```\r\n","path":"responses/mistral-large/livebench-024-data-analysis.txt","size":198,"mtime":1779369641}

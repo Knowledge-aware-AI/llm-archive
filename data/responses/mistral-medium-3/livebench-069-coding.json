@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\n        if cnt[ord(x) - ord('a')] == mx:\r\n            result.append(x)\r\n            cnt[ord(x) - ord('a')] -= 1\r\n    return ''.join(reversed(result))\r\n```\r\n","path":"responses/mistral-medium-3/livebench-069-coding.txt","size":167,"mtime":1779370269}

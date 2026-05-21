@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\nN = int(input())\r\nprint(str(N) * N)\r\n```\r\n","path":"responses/mistral-medium-3-1/livebench-097-coding.txt","size":53,"mtime":1779370550}

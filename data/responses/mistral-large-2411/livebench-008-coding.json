@@ -1,0 +1,1 @@
+{"status":"ready","content":"```\r\n        return result\r\n\r\n    return count(finish) - count(start - 1)\r\n```\r\n","path":"responses/mistral-large-2411/livebench-008-coding.txt","size":80,"mtime":1779369980}

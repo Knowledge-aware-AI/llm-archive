@@ -1,0 +1,1 @@
+{"status":"ready","content":"The bug is in the `snoise` function where the line `vec4 j = p - 49.0 * floor(p * ns.z *ns.z);` is missing a `+` sign. The original line should be:\r\n\r\n```glsl\r\nvec4 j = p - 49.0 * floor(p * ns.z * ns.z);\r\n```\r\n","path":"responses/mistral-medium-3-5/hle-037.txt","size":210,"mtime":1779370845}

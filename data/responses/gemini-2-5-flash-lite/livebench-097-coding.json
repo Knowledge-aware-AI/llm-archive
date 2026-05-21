@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\nN = int(input())\r\nresult = str(N) * N\r\nprint(result)\r\n```\r\n","path":"responses/gemini-2-5-flash-lite/livebench-097-coding.txt","size":70,"mtime":1779368142}

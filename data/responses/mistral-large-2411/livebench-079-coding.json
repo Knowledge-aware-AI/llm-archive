@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\n                left += 1\r\n        return result\r\n```\r\n","path":"responses/mistral-large-2411/livebench-079-coding.txt","size":66,"mtime":1779370007}

@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\nfrom typing import List\r\nfrom collections import Counter\r\n\r\nclass Solution:\r\n    def isPossibleToSplit(self, nums: List[int]) -> bool:\r\n        count = Counter(nums)\r\n        return all(v <= 2 for v in count.values())\r\n```\r\n","path":"responses/claude-sonnet-4-6/livebench-093-coding.txt","size":235,"mtime":1779367877}

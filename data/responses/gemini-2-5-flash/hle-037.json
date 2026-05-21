@@ -1,0 +1,1 @@
+{"status":"ready","content":"The original, unmodified line is:\r\n\r\n```glsl\r\nvec3 i1 = min( g.xyz, l.zxy );\r\n```\r\n","path":"responses/gemini-2-5-flash/hle-037.txt","size":83,"mtime":1779368001}

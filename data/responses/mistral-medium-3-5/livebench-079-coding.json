@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\n        left += 1\r\n    return result - (len(s) - left) * left // 2\r\n```\r\n","path":"responses/mistral-medium-3-5/livebench-079-coding.txt","size":84,"mtime":1779370948}

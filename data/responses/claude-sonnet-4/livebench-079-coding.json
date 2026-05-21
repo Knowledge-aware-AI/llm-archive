@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\n            left += 1\r\n        return result\r\n```\r\n","path":"responses/claude-sonnet-4/livebench-079-coding.txt","size":62,"mtime":1779367658}

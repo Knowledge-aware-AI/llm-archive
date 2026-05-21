@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\n{\r\n    \"tweet_id\": \"q76k2bUnOlk\",\r\n    \"airline\": \"C8eRZt40qKM\",\r\n    \"negativereason\": \"c2A+LJlP174\",\r\n    \"negativereason_confidence\": \"jUs0oGda1Ms\"\r\n}\r\n```\r\n","path":"responses/mistral-medium-3/livebench-024-data-analysis.txt","size":171,"mtime":1779370216}

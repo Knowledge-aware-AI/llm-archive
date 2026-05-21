@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\ndef solve():\r\n    N, T = map(int, input().split())\r\n    scores = [0] * N\r\n    for _ in range(T):\r\n        A, B = map(int, input().split())\r\n        scores[A - 1] += B\r\n        print(len(set(scores)))\r\n\r\nsolve()\r\n```\r\n","path":"responses/gemini-2-0-flash/livebench-020-coding.txt","size":228,"mtime":1779367920}
