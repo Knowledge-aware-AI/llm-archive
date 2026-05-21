@@ -4,7 +4,7 @@ This folder is a static version of the response browser that can be deployed wit
 
 It does not require `serve_responses.mjs` or any backend API. The original API responses have been materialized as static JSON files under `data/`.
 
-For direct local viewing, `data/archive-data.js` embeds the same snapshot so the app also works when `index.html` is opened with a `file://` URL.
+Open this folder through a local static server for testing so the browser can fetch the JSON files under `data/`.
 
 ## Deploy
 
@@ -14,6 +14,4 @@ For a project page, the app is safe to serve from a subpath such as `/repository
 
 ## Refresh
 
-If prompts, model chains, responses, or analysis metrics change, regenerate this folder from the repository root so `data/metadata.json`, `data/statistics.json`, and `data/responses/` match the latest snapshot.
-
-Regenerate `data/archive-data.js` at the same time if you want double-click local viewing to keep working.
+If prompts, model chains, responses, or analysis metrics change, regenerate this folder from the repository root so `data/model-families.json`, `data/response-catalogue.json`, `data/statistics.json`, and `data/responses/` match the latest snapshot.

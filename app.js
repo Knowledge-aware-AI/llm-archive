@@ -81,11 +81,21 @@ function applyHashState({ render = false } = {}) {
 
 async function loadCatalog({ preservePrompt = true } = {}) {
   elements.catalogStatus.textContent = "Loading snapshot";
-  const [catalogResponse, statisticsResponse] = await Promise.all([
-    fetch("data/metadata.json"),
+  const [modelFamiliesResponse, responseCatalogueResponse, statisticsResponse] = await Promise.all([
+    fetch("data/model-families.json"),
+    fetch("data/response-catalogue.json"),
     fetch("data/statistics.json"),
   ]);
-  state.catalog = await catalogResponse.json();
+  const [modelFamilies, responseCatalogue] = await Promise.all([
+    modelFamiliesResponse.json(),
+    responseCatalogueResponse.json(),
+  ]);
+  state.catalog = {
+    ...responseCatalogue,
+    families: modelFamilies.families,
+    responseRoot: responseCatalogue.responseRoot ?? modelFamilies.responseRoot,
+    indexedAt: responseCatalogue.indexedAt ?? modelFamilies.indexedAt,
+  };
   state.statistics = await statisticsResponse.json();
 
   if (!state.catalog.families[state.family]) {
