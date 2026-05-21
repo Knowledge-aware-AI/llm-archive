@@ -82,8 +82,8 @@ function applyHashState({ render = false } = {}) {
 async function loadCatalog({ preservePrompt = true } = {}) {
   elements.catalogStatus.textContent = "Loading snapshot";
   const [modelFamiliesResponse, responseCatalogueResponse, statisticsResponse] = await Promise.all([
-    fetch("data/model-families.json"),
     fetch("data/response-catalogue.json"),
+    fetch("data/prompt-list.json"),
     fetch("data/statistics.json"),
   ]);
   const [modelFamilies, responseCatalogue] = await Promise.all([

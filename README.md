@@ -14,4 +14,4 @@ For a project page, the app is safe to serve from a subpath such as `/repository
 
 ## Refresh
 
-If prompts, model chains, responses, or analysis metrics change, regenerate this folder from the repository root so `data/model-families.json`, `data/response-catalogue.json`, `data/statistics.json`, and `data/responses/` match the latest snapshot.
+If prompts, model chains, responses, or analysis metrics change, regenerate this folder from the repository root so `data/response-catalogue.json`, `data/prompt-list.json`, `data/statistics.json`, and `data/responses/` match the latest snapshot.
