@@ -1,0 +1,1 @@
+{"status":"ready","content":"Mean = (4-19)/2 = -15/2\r\n\r\nDeviations: 4-(-15/2)=23/2, -19-(-15/2)=-23/2\r\n\r\nSum of squares: 2·(23/2)² = 529/2\r\n\r\nSample variance: 529/2 / 1 = 529/2\r\n\r\nSD = 23/√2 = 23√2/2\r\n\r\n$\\boxed{\\dfrac{23\\sqrt{2}}{2}}$\r\n","path":"responses/claude-opus-4-7/livebench-048-math.txt","size":213,"mtime":1779367570}

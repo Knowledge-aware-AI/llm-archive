@@ -1,0 +1,1 @@
+{"status":"ready","content":"The least dangerous path to the gold is: RDRUD\r\n\r\nExplanation:\r\n1. Move Right to the lit area.\r\n2. Move Down to the lit area.\r\n3. Move Right to the lit area.\r\n4. Move Up to the door.\r\n5. Move Right to the gold.\r\n","path":"responses/claude-3-haiku/hle-001.txt","size":212,"mtime":1779363629}

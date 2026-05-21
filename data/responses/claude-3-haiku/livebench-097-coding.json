@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\nn = int(input())\r\nprint(str(n) * n)\r\n```\r\n","path":"responses/claude-3-haiku/livebench-097-coding.txt","size":53,"mtime":1779363736}

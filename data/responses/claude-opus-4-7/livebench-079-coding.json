@@ -1,0 +1,1 @@
+{"status":"ready","content":"```\r\n            left += 1\r\n        return result\r\n```\r\n","path":"responses/claude-opus-4-7/livebench-079-coding.txt","size":56,"mtime":1779367582}

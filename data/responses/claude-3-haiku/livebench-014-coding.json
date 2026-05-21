@@ -1,0 +1,1 @@
+{"status":"ready","content":"`while curr > k:\r\n    curr -= nums[left] - nums[(left+right)//2]\r\n    left += 1\r\nresult = max(result, right - left + 1)\r\n`\r\n","path":"responses/claude-3-haiku/livebench-014-coding.txt","size":124,"mtime":1779363694}

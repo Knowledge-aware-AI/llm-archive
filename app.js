@@ -24,6 +24,7 @@ const elements = {
   clearTags: document.querySelector("#clearTags"),
   promptMatchCount: document.querySelector("#promptMatchCount"),
   familySelect: document.querySelector("#familySelect"),
+  familyField: document.querySelector(".family-field"),
   modelPanel: document.querySelector(".slider-field-wide"),
   modelTrack: document.querySelector("#modelTrack"),
   modelSlider: document.querySelector("#modelSlider"),
@@ -209,6 +210,7 @@ function renderView() {
   elements.statisticsViewButton.setAttribute("aria-pressed", String(showingStatistics));
   elements.datasetViewButton.setAttribute("aria-pressed", String(showingDataset));
   elements.responseControls.classList.toggle("hidden", !showingResponses);
+  elements.familyField.classList.toggle("hidden", !showingResponses);
   elements.contentGrid.classList.toggle("hidden", !showingResponses);
   elements.statisticsView.classList.toggle("hidden", !showingStatistics);
   elements.datasetView.classList.toggle("hidden", !showingDataset);
@@ -364,7 +366,6 @@ function renderPromptList(model, filteredPrompts) {
 function renderStatistics() {
   if (!state.statistics || !elements.chartGrid) return;
 
-  const models = state.statistics.families[state.family] ?? [];
   const charts = [
     {
       key: "verbosity",
@@ -390,17 +391,52 @@ function renderStatistics() {
       value: (model) => model.metrics?.epistemicHumility,
       format: (value) => value.toFixed(1),
     },
+    {
+      key: "quality",
+      title: "Response Quality",
+      unit: "1-10 judge score",
+      description: state.statistics.metricDefinitions.quality,
+      value: (model) => model.metrics?.quality,
+      format: (value) => value.toFixed(1),
+    },
+    {
+      key: "sycophancy",
+      title: "Sycophancy",
+      unit: "1-10 judge score",
+      description: state.statistics.metricDefinitions.sycophancy,
+      value: (model) => model.metrics?.sycophancy,
+      format: (value) => value.toFixed(1),
+    },
+    {
+      key: "politicalAlignment",
+      title: "Political Alignment",
+      unit: "1 left, 10 right",
+      description: state.statistics.metricDefinitions.politicalAlignment,
+      value: (model) => model.metrics?.politicalAlignment,
+      format: (value) => value.toFixed(1),
+    },
   ];
 
-  elements.chartGrid.innerHTML = charts.map((chart) => renderChartCard(chart, models)).join("");
+  elements.chartGrid.innerHTML = charts.map((chart) => renderChartCard(chart)).join("");
 }
 
-function renderChartCard(chart, models) {
-  const values = models
-    .map((model) => ({ ...model, value: chart.value(model) }))
-    .filter((model) => Number.isFinite(model.value));
+function chartSeries(chart) {
+  return Object.entries(state.statistics.families ?? {})
+    .map(([family, models], familyIndex) => ({
+      family,
+      label: formatFamilyLabel(family),
+      color: chartColor(familyIndex),
+      values: models
+        .map((model) => ({ ...model, value: chart.value(model) }))
+        .filter((model) => Number.isFinite(model.value)),
+    }))
+    .filter((series) => series.values.length > 0);
+}
 
-  if (values.length === 0) {
+function renderChartCard(chart) {
+  const series = chartSeries(chart);
+
+  if (series.length === 0) {
     return `
       <article class="chart-card">
         <div class="chart-head">
@@ -409,12 +445,12 @@ function renderChartCard(chart, models) {
             <p>${escapeHtml(chart.description)}</p>
           </div>
         </div>
-        <div class="chart-empty">No analysis metrics are available for this family yet.</div>
+        <div class="chart-empty">No analysis metrics are available for this experiment yet.</div>
       </article>
     `;
   }
 
-  const latest = values[values.length - 1];
+  const modelCount = series.reduce((total, item) => total + item.values.length, 0);
   return `
     <article class="chart-card">
       <div class="chart-head">
@@ -422,33 +458,40 @@ function renderChartCard(chart, models) {
           <h2>${escapeHtml(chart.title)}</h2>
           <p>${escapeHtml(chart.description)}</p>
         </div>
-        <span class="chart-value">${escapeHtml(chart.format(latest.value))}</span>
+        <span class="chart-value">${modelCount.toLocaleString()} models</span>
       </div>
-      ${renderLineChart(values, chart)}
+      ${renderLineChart(series, chart)}
+      ${renderLegend(series)}
     </article>
   `;
 }
 
-function renderLineChart(values, chart) {
-  const width = 520;
-  const height = 300;
-  const margin = { top: 18, right: 18, bottom: 82, left: 54 };
+function renderLineChart(series, chart) {
+  const width = 1040;
+  const height = 420;
+  const margin = { top: 24, right: 24, bottom: 58, left: 66 };
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
-  const rawMin = Math.min(...values.map((item) => item.value));
-  const rawMax = Math.max(...values.map((item) => item.value));
+  const allValues = series.flatMap((item) => item.values.map((value) => value.value));
+  const rawMin = Math.min(...allValues);
+  const rawMax = Math.max(...allValues);
   const padding = rawMax === rawMin ? Math.max(Math.abs(rawMax) * 0.1, 1) : (rawMax - rawMin) * 0.12;
-  const min = chart.key === "positivity" ? Math.min(-1, rawMin - padding) : Math.max(0, rawMin - padding);
-  const max = chart.key === "positivity" ? Math.max(1, rawMax + padding) : rawMax + padding;
-  const xFor = (index) => margin.left + (values.length === 1 ? plotWidth / 2 : (index / (values.length - 1)) * plotWidth);
+  const isLikert = ["quality", "sycophancy", "politicalAlignment"].includes(chart.key);
+  const min = chart.key === "positivity" ? Math.min(-1, rawMin - padding) : isLikert ? 1 : Math.max(0, rawMin - padding);
+  const max = chart.key === "positivity" ? Math.max(1, rawMax + padding) : isLikert ? 10 : rawMax + padding;
+  const maxLength = Math.max(...series.map((item) => item.values.length));
+  const xFor = (index, count) => margin.left + (count === 1 ? plotWidth / 2 : (index / (count - 1)) * plotWidth);
   const yFor = (value) => margin.top + ((max - value) / (max - min || 1)) * plotHeight;
-  const points = values.map((item, index) => ({
+  const drawableSeries = series.map((item) => ({
     ...item,
-    x: xFor(index),
-    y: yFor(item.value),
+    points: item.values.map((value, index) => ({
+      ...value,
+      x: xFor(index, item.values.length),
+      y: yFor(value.value),
+    })),
   }));
-  const path = points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" ");
   const yTicks = [min, (min + max) / 2, max];
+  const xTicks = [0, Math.max(0, maxLength - 1)];
 
   return `
     <svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(chart.title)} over model releases">
@@ -457,15 +500,17 @@ function renderLineChart(values, chart) {
         <text class="chart-y-label" x="${margin.left - 8}" y="${(yFor(tick) + 4).toFixed(1)}" text-anchor="end">${escapeHtml(formatAxisValue(tick, chart))}</text>
       `).join("")}
       <line class="chart-axis" x1="${margin.left}" x2="${width - margin.right}" y1="${height - margin.bottom}" y2="${height - margin.bottom}"></line>
-      <path class="chart-line" d="${path}"></path>
-      ${points.map((point) => `
-        <circle class="chart-point" cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="4">
-          <title>${escapeHtml(point.label)} (${escapeHtml(point.releaseDate)}): ${escapeHtml(chart.format(point.value))}</title>
+      ${drawableSeries.map((item) => {
+        const path = item.points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" ");
+        return `<path class="chart-line" d="${path}" style="stroke: ${item.color}"></path>`;
+      }).join("")}
+      ${drawableSeries.flatMap((item) => item.points.map((point) => `
+        <circle class="chart-point" cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="4" style="stroke: ${item.color}">
+          <title>${escapeHtml(item.label)} - ${escapeHtml(point.label)} (${escapeHtml(point.releaseDate)}): ${escapeHtml(chart.format(point.value))}</title>
         </circle>
-      `).join("")}
-      ${points.map((point, index) => `
-        <text class="chart-label" x="${point.x.toFixed(1)}" y="${height - 48}" text-anchor="end" transform="rotate(-38 ${point.x.toFixed(1)} ${height - 48})">${escapeHtml(point.releaseDate)}</text>
-        <text class="chart-model-label" x="${point.x.toFixed(1)}" y="${height - 18}" text-anchor="middle">${escapeHtml(shortModelLabel(point.label, index, points.length))}</text>
+      `)).join("")}
+      ${xTicks.map((tick) => `
+        <text class="chart-label" x="${(margin.left + (tick / Math.max(maxLength - 1, 1)) * plotWidth).toFixed(1)}" y="${height - 24}" text-anchor="${tick === 0 ? "start" : "end"}">${tick === 0 ? "Older models" : "Newer models"}</text>
       `).join("")}
     </svg>
   `;
@@ -476,17 +521,28 @@ function formatAxisValue(value, chart) {
   return value.toFixed(1);
 }
 
-function shortModelLabel(label, index, total) {
-  if (total > 7 && index % 2 === 1) return "";
-  return label
-    .replace("Gemini ", "G ")
-    .replace("Claude ", "C ")
-    .replace("GPT-", "G")
-    .replace(" Preview", "")
-    .replace(" Turbo", "T")
-    .replace(" Mini", "M")
-    .replace(" Flash", "F")
-    .replace(" Lite", "L");
+function chartColor(index) {
+  return [
+    "#0f766e",
+    "#2563eb",
+    "#b45309",
+    "#be123c",
+    "#7c3aed",
+    "#15803d",
+    "#c026d3",
+    "#475569",
+    "#dc2626",
+  ][index % 9];
+}
+
+function renderLegend(series) {
+  return `
+    <div class="chart-legend">
+      ${series.map((item) => `
+        <span><i style="background: ${item.color}"></i>${escapeHtml(item.label)}</span>
+      `).join("")}
+    </div>
+  `;
 }
 
 async function loadResponse() {

@@ -677,8 +677,8 @@ input[type="range"] {
 
 .chart-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 20px;
 }
 
 .chart-card {
@@ -686,7 +686,7 @@ input[type="range"] {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.9);
-  padding: 14px;
+  padding: 18px;
   box-shadow: var(--shadow);
 }
 
@@ -699,7 +699,7 @@ input[type="range"] {
 }
 
 .chart-head h2 {
-  font-size: 1.05rem;
+  font-size: 1.18rem;
 }
 
 .chart-head p {
@@ -731,15 +731,13 @@ input[type="range"] {
 
 .chart-line {
   fill: none;
-  stroke: var(--accent);
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 3;
+  stroke-width: 2.8;
 }
 
 .chart-point {
   fill: #fff;
-  stroke: var(--accent-dark);
   stroke-width: 2;
 }
 
@@ -861,6 +859,28 @@ input[type="range"] {
     flex-direction: column;
     gap: 12px;
   }
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.chart-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.chart-legend i {
+  width: 18px;
+  height: 3px;
+  border-radius: 999px;
 }
 
 @media (max-width: 1180px) {

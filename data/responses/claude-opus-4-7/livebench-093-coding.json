@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\nclass Solution:\r\n    def isPossibleToSplit(self, nums: List[int]) -> bool:\r\n        from collections import Counter\r\n        return max(Counter(nums).values()) <= 2\r\n```\r\n","path":"responses/claude-opus-4-7/livebench-093-coding.txt","size":182,"mtime":1779367587}

@@ -1,0 +1,1 @@
+{"status":"ready","content":"```python\r\nn=input().strip()\r\nprint(n*int(n))\r\n```\r\n","path":"responses/claude-opus-4-7/livebench-097-coding.txt","size":52,"mtime":1779367588}
