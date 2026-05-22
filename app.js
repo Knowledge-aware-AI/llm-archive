@@ -251,7 +251,10 @@ function renderTimeline(models) {
     marker.className = `timeline-marker${index === state.modelIndex ? " active" : ""}`;
     marker.title = `${model.label} - approx. ${model.releaseDate}`;
     marker.setAttribute("aria-label", `${model.label}, approximate release ${model.releaseDate}`);
-    marker.innerHTML = `<span>${escapeHtml(model.releaseDate)}</span>`;
+    marker.innerHTML = `
+      <span class="timeline-date">${escapeHtml(model.releaseDate)}</span>
+      <span class="timeline-model">${escapeHtml(model.label)}</span>
+    `;
     marker.addEventListener("click", () => {
       state.modelIndex = index;
       renderCurrent();

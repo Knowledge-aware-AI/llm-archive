@@ -3,17 +3,17 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>LLM Response Timeline</title>
-    <link rel="stylesheet" href="styles.css?v=2026-05-20-prompt-clamp">
+    <title>LLM-Archive</title>
+    <link rel="stylesheet" href="styles.css?v=2026-05-22-wayback-redesign">
   </head>
   <body>
     <main class="shell">
       <header class="topbar">
         <div class="brand">
-          <img class="brand-logo" src="assets/llm-archive-archeologist-banner.png" alt="">
+          <div class="archive-mark" aria-hidden="true">L</div>
           <div class="brand-copy">
             <h1>LLM-Archive</h1>
-            <p class="tagline">We archive the voices the companies erase.</p>
+            <p class="tagline">A public archive of model responses.</p>
           </div>
         </div>
         <div class="status-pill" id="catalogStatus">Loading</div>
@@ -48,7 +48,7 @@
             <button id="datasetViewButton" type="button" aria-pressed="false">Dataset</button>
           </nav>
 
-          <label class="field compact family-field">
+          <label class="family-field">
             <span>Model family</span>
             <select id="familySelect">
               <option value="openai_flagship">OpenAI Flagship</option>
@@ -60,7 +60,7 @@
         <section class="controls response-view" aria-label="Response controls">
           <div class="slider-field slider-field-wide">
             <div class="slider-head">
-              <span>Model order by approx. release</span>
+              <span>Model timeline</span>
               <strong id="modelLabel">-</strong>
             </div>
             <div class="model-track" id="modelTrack">
@@ -103,6 +103,11 @@
             </div>
           </div>
 
+          <div class="meta-row">
+            <span id="responseStatus">Loading</span>
+            <span id="responsePath"></span>
+          </div>
+
           <pre id="responseText" class="response-text">Loading responses...</pre>
         </article>
       </section>
@@ -143,6 +148,6 @@
       </footer>
     </main>
 
-    <script src="app.js?v=2026-05-22-statistics-range"></script>
+    <script src="app.js?v=2026-05-22-wayback-redesign"></script>
   </body>
 </html>
