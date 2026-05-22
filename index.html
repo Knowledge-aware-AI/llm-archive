@@ -108,6 +108,16 @@
       </section>
 
       <section class="statistics-view hidden" aria-label="Model statistics">
+        <div class="statistics-toolbar" aria-label="Statistics controls">
+          <div>
+            <p class="eyebrow">Chart range</p>
+            <p>Recent era highlights current model families. Full history includes the early GPT baseline.</p>
+          </div>
+          <div class="range-switch" role="group" aria-label="Chart date range">
+            <button class="active" id="recentChartsButton" type="button" aria-pressed="true">Recent era</button>
+            <button id="fullHistoryChartsButton" type="button" aria-pressed="false">Full history</button>
+          </div>
+        </div>
         <div class="chart-grid" id="chartGrid"></div>
       </section>
 
@@ -133,6 +143,6 @@
       </footer>
     </main>
 
-    <script src="app.js?v=2026-05-21-date-scaled-statistics"></script>
+    <script src="app.js?v=2026-05-22-statistics-range"></script>
   </body>
 </html>

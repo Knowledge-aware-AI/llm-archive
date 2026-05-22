@@ -7,6 +7,20 @@ const state = {
   promptId: "",
   family: "openai_flagship",
   modelIndex: 0,
+  chartRange: "recent",
+};
+
+const CHART_RANGES = {
+  recent: {
+    label: "Recent era",
+    startTime: Date.UTC(2024, 0, 1),
+    note: "Showing models released from 2024 onward.",
+  },
+  full: {
+    label: "Full history",
+    startTime: Number.NEGATIVE_INFINITY,
+    note: "Showing the full release history.",
+  },
 };
 
 const elements = {
@@ -19,6 +33,8 @@ const elements = {
   statisticsView: document.querySelector(".statistics-view"),
   datasetView: document.querySelector(".dataset-view"),
   chartGrid: document.querySelector("#chartGrid"),
+  recentChartsButton: document.querySelector("#recentChartsButton"),
+  fullHistoryChartsButton: document.querySelector("#fullHistoryChartsButton"),
   promptSearch: document.querySelector("#promptSearch"),
   tagList: document.querySelector("#tagList"),
   clearTags: document.querySelector("#clearTags"),
@@ -365,6 +381,7 @@ function renderPromptList(model, filteredPrompts) {
 
 function renderStatistics() {
   if (!state.statistics || !elements.chartGrid) return;
+  renderStatisticsControls();
 
   const charts = [
     {
@@ -420,16 +437,33 @@ function renderStatistics() {
   elements.chartGrid.innerHTML = charts.map((chart) => renderChartCard(chart)).join("");
 }
 
+function renderStatisticsControls() {
+  const showingRecent = state.chartRange === "recent";
+  elements.recentChartsButton.classList.toggle("active", showingRecent);
+  elements.fullHistoryChartsButton.classList.toggle("active", !showingRecent);
+  elements.recentChartsButton.setAttribute("aria-pressed", String(showingRecent));
+  elements.fullHistoryChartsButton.setAttribute("aria-pressed", String(!showingRecent));
+}
+
 function chartSeries(chart) {
+  const range = CHART_RANGES[state.chartRange] ?? CHART_RANGES.recent;
   return Object.entries(state.statistics.families ?? {})
-    .map(([family, models], familyIndex) => ({
-      family,
-      label: formatFamilyLabel(family),
-      color: chartColor(familyIndex),
-      values: models
+    .map(([family, models], familyIndex) => {
+      const values = models
         .map((model) => ({ ...model, value: chart.value(model) }))
-        .filter((model) => Number.isFinite(model.value)),
-    }))
+        .filter((model) => Number.isFinite(model.value));
+      const visibleValues = values.filter((model) => {
+        const time = releaseTime(model.releaseDate);
+        return !Number.isFinite(range.startTime) || !Number.isFinite(time) || time >= range.startTime;
+      });
+      return {
+        family,
+        label: formatFamilyLabel(family),
+        color: chartColor(familyIndex),
+        values: visibleValues,
+        hiddenCount: values.length - visibleValues.length,
+      };
+    })
     .filter((series) => series.values.length > 0);
 }
 
@@ -451,6 +485,10 @@ function renderChartCard(chart) {
   }
 
   const modelCount = series.reduce((total, item) => total + item.values.length, 0);
+  const hiddenCount = series.reduce((total, item) => total + item.hiddenCount, 0);
+  const chartNote = state.chartRange === "recent" && hiddenCount > 0
+    ? `${hiddenCount.toLocaleString()} earlier models hidden. Switch to full history to include them.`
+    : CHART_RANGES[state.chartRange].note;
   return `
     <article class="chart-card">
       <div class="chart-head">
@@ -461,6 +499,7 @@ function renderChartCard(chart) {
         <span class="chart-value">${modelCount.toLocaleString()} models</span>
       </div>
       ${renderLineChart(series, chart)}
+      <p class="chart-note">${escapeHtml(chartNote)}</p>
       ${renderLegend(series)}
     </article>
   `;
@@ -484,8 +523,10 @@ function renderLineChart(series, chart) {
   const isLikert = ["quality", "sycophancy", "politicalAlignment"].includes(chart.key);
   const min = chart.key === "positivity" ? Math.min(-1, rawMin - padding) : isLikert ? 1 : Math.max(0, rawMin - padding);
   const max = chart.key === "positivity" ? Math.max(1, rawMax + padding) : isLikert ? 10 : rawMax + padding;
-  const minTime = Math.min(...datedValues.map((value) => value.releaseTime));
+  const range = CHART_RANGES[state.chartRange] ?? CHART_RANGES.recent;
+  const rawMinTime = Math.min(...datedValues.map((value) => value.releaseTime));
   const maxTime = Math.max(...datedValues.map((value) => value.releaseTime));
+  const minTime = state.chartRange === "recent" ? range.startTime : rawMinTime;
   const timeSpan = maxTime - minTime || 1;
   const xFor = (releaseDate) => {
     const time = releaseTime(releaseDate);
@@ -656,6 +697,16 @@ elements.statisticsViewButton.addEventListener("click", () => {
 
 elements.datasetViewButton.addEventListener("click", () => {
   setView("dataset");
+});
+
+elements.recentChartsButton.addEventListener("click", () => {
+  state.chartRange = "recent";
+  renderStatistics();
+});
+
+elements.fullHistoryChartsButton.addEventListener("click", () => {
+  state.chartRange = "full";
+  renderStatistics();
 });
 
 window.addEventListener("hashchange", () => {

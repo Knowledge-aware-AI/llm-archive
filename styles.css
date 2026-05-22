@@ -629,6 +629,52 @@ input[type="range"] {
   gap: 16px;
 }
 
+.statistics-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  padding: 14px 16px;
+  box-shadow: 0 8px 24px rgba(24, 32, 39, 0.04);
+}
+
+.statistics-toolbar p:not(.eyebrow) {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.range-switch {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 4px;
+}
+
+.range-switch button {
+  min-height: 36px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  padding: 7px 12px;
+  cursor: pointer;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.range-switch button.active {
+  background: var(--accent);
+  color: #fff;
+}
+
 .dataset-view {
   display: grid;
 }
@@ -742,6 +788,13 @@ input[type="range"] {
   stroke-width: 2;
 }
 
+.chart-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
 .chart-label,
 .chart-y-label {
   fill: var(--muted);
@@ -820,6 +873,7 @@ input[type="range"] {
   .topbar,
   .response-head,
   .meta-row,
+  .statistics-toolbar,
   .dataset-card {
     align-items: stretch;
     flex-direction: column;
