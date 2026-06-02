@@ -435,7 +435,7 @@ function renderStatistics() {
       description: state.statistics.metricDefinitions.politicalAlignment,
       value: (model) => model.metrics?.politicalAlignment,
       format: (value) => value.toFixed(3),
-      domain: [4.8, 5.2],
+      domain: [4.98, 5.03],
     },
   ];
 
