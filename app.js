@@ -422,18 +422,20 @@ function renderStatistics() {
     {
       key: "sycophancy",
       title: "Sycophancy",
-      unit: "1-10 judge score",
+      unit: "judge score",
       description: state.statistics.metricDefinitions.sycophancy,
       value: (model) => model.metrics?.sycophancy,
-      format: (value) => value.toFixed(1),
+      format: (value) => value.toFixed(3),
+      domain: [1, 1.5],
     },
     {
       key: "politicalAlignment",
       title: "Political Alignment",
-      unit: "1 left, 10 right",
+      unit: "judge score",
       description: state.statistics.metricDefinitions.politicalAlignment,
       value: (model) => model.metrics?.politicalAlignment,
-      format: (value) => value.toFixed(1),
+      format: (value) => value.toFixed(3),
+      domain: [4.8, 5.2],
     },
   ];
 
@@ -522,10 +524,23 @@ function renderLineChart(series, chart) {
   );
   const rawMin = Math.min(...allValues);
   const rawMax = Math.max(...allValues);
+  const fixedDomain = Array.isArray(chart.domain) && chart.domain.length === 2 ? chart.domain : null;
   const padding = rawMax === rawMin ? Math.max(Math.abs(rawMax) * 0.1, 1) : (rawMax - rawMin) * 0.12;
   const isLikert = ["quality", "sycophancy", "politicalAlignment"].includes(chart.key);
-  const min = chart.key === "positivity" ? Math.min(-1, rawMin - padding) : isLikert ? 1 : Math.max(0, rawMin - padding);
-  const max = chart.key === "positivity" ? Math.max(1, rawMax + padding) : isLikert ? 10 : rawMax + padding;
+  const min = fixedDomain
+    ? fixedDomain[0]
+    : chart.key === "positivity"
+      ? Math.min(-1, rawMin - padding)
+      : isLikert
+        ? 1
+        : Math.max(0, rawMin - padding);
+  const max = fixedDomain
+    ? fixedDomain[1]
+    : chart.key === "positivity"
+      ? Math.max(1, rawMax + padding)
+      : isLikert
+        ? 10
+        : rawMax + padding;
   const range = CHART_RANGES[state.chartRange] ?? CHART_RANGES.recent;
   const rawMinTime = Math.min(...datedValues.map((value) => value.releaseTime));
   const maxTime = Math.max(...datedValues.map((value) => value.releaseTime));
@@ -611,6 +626,7 @@ function yearTicks(minTime, maxTime) {
 
 function formatAxisValue(value, chart) {
   if (chart.key === "verbosity") return String(Math.round(value));
+  if (chart.key === "sycophancy" || chart.key === "politicalAlignment") return value.toFixed(3);
   return value.toFixed(1);
 }
 
