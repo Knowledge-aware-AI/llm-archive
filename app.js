@@ -13,8 +13,8 @@ const state = {
 const CHART_RANGES = {
   recent: {
     label: "Recent era",
-    startTime: Date.UTC(2024, 0, 1),
-    note: "Showing models released from 2024 onward.",
+    startTime: Date.UTC(2023, 0, 1),
+    note: "Showing models released from 2023 onward.",
   },
   full: {
     label: "Full history",
@@ -426,7 +426,7 @@ function renderStatistics() {
       description: state.statistics.metricDefinitions.sycophancy,
       value: (model) => model.metrics?.sycophancy,
       format: (value) => value.toFixed(3),
-      domain: [1, 1.5],
+      domain: [1, 1.45],
     },
     {
       key: "politicalAlignment",
@@ -435,7 +435,7 @@ function renderStatistics() {
       description: state.statistics.metricDefinitions.politicalAlignment,
       value: (model) => model.metrics?.politicalAlignment,
       format: (value) => value.toFixed(3),
-      domain: [4.98, 5.03],
+      domain: [4.99, 5.03],
     },
   ];
 
@@ -525,21 +525,21 @@ function renderLineChart(series, chart) {
   const rawMin = Math.min(...allValues);
   const rawMax = Math.max(...allValues);
   const fixedDomain = Array.isArray(chart.domain) && chart.domain.length === 2 ? chart.domain : null;
-  const padding = rawMax === rawMin ? Math.max(Math.abs(rawMax) * 0.1, 1) : (rawMax - rawMin) * 0.12;
+  const padding = rawMax === rawMin ? Math.max(Math.abs(rawMax) * 0.06, 1) : (rawMax - rawMin) * 0.06;
   const isLikert = ["quality", "sycophancy", "politicalAlignment"].includes(chart.key);
   const min = fixedDomain
     ? fixedDomain[0]
     : chart.key === "positivity"
-      ? Math.min(-1, rawMin - padding)
+      ? Math.max(-1, rawMin - padding)
       : isLikert
-        ? 1
+        ? Math.max(1, rawMin - padding)
         : Math.max(0, rawMin - padding);
   const max = fixedDomain
     ? fixedDomain[1]
     : chart.key === "positivity"
-      ? Math.max(1, rawMax + padding)
+      ? Math.min(1, rawMax + padding)
       : isLikert
-        ? 10
+        ? Math.min(10, rawMax + padding)
         : rawMax + padding;
   const range = CHART_RANGES[state.chartRange] ?? CHART_RANGES.recent;
   const rawMinTime = Math.min(...datedValues.map((value) => value.releaseTime));
