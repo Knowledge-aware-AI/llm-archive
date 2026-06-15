@@ -394,7 +394,6 @@ function renderStatistics() {
       description: state.statistics.metricDefinitions.verbosity,
       value: (model) => model.metrics?.verbosity,
       format: (value) => `${Math.round(value).toLocaleString()} words`,
-      domain: [0, 2400],
     },
     {
       key: "positivity",
@@ -411,7 +410,6 @@ function renderStatistics() {
       description: state.statistics.metricDefinitions.epistemicHumility,
       value: (model) => model.metrics?.epistemicHumility,
       format: (value) => value.toFixed(1),
-      domain: [0, 10],
     },
     {
       key: "quality",
@@ -428,7 +426,7 @@ function renderStatistics() {
       description: state.statistics.metricDefinitions.sycophancy,
       value: (model) => model.metrics?.sycophancy,
       format: (value) => value.toFixed(3),
-      domain: [1.07, 1.42],
+      domain: [1, 1.45],
     },
     {
       key: "politicalAlignment",
@@ -437,7 +435,7 @@ function renderStatistics() {
       description: state.statistics.metricDefinitions.politicalAlignment,
       value: (model) => model.metrics?.politicalAlignment,
       format: (value) => value.toFixed(3),
-      domain: [4.997, 5.028],
+      domain: [4.99, 5.03],
     },
   ];
 
@@ -553,14 +551,40 @@ function renderLineChart(series, chart) {
     return Number.isFinite(time) ? margin.left + ((time - minTime) / timeSpan) * plotWidth : margin.left + plotWidth / 2;
   };
   const yFor = (value) => margin.top + ((max - value) / (max - min || 1)) * plotHeight;
-  const drawableSeries = series.map((item) => ({
-    ...item,
-    points: item.values.map((value) => ({
-      ...value,
-      x: xFor(value.releaseDate),
-      y: yFor(value.value),
-    })),
-  }));
+
+  const drawableSeries = series.map((item) => {
+    const segments = [];
+    let currentSegment = [];
+
+    for (const value of item.values) {
+      const inRange = value.value >= min && value.value <= max;
+
+      if (!inRange) {
+        if (currentSegment.length > 0) {
+          segments.push(currentSegment);
+          currentSegment = [];
+        }
+        continue;
+      }
+
+      currentSegment.push({
+        ...value,
+        x: xFor(value.releaseDate),
+        y: yFor(value.value),
+      });
+    }
+
+    if (currentSegment.length > 0) {
+      segments.push(currentSegment);
+    }
+
+    return {
+      ...item,
+      segments,
+      points: segments.flat(),
+    };
+  });
+
   const yTicks = [min, (min + max) / 2, max];
   const xTicks = yearTicks(minTime, maxTime);
 
@@ -571,17 +595,17 @@ function renderLineChart(series, chart) {
         <text class="chart-y-label" x="${margin.left - 8}" y="${(yFor(tick) + 4).toFixed(1)}" text-anchor="end">${escapeHtml(formatAxisValue(tick, chart))}</text>
       `).join("")}
       <line class="chart-axis" x1="${margin.left}" x2="${width - margin.right}" y1="${height - margin.bottom}" y2="${height - margin.bottom}"></line>
-      ${drawableSeries.map((item) => {
-        const path = item.points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" ");
+      ${drawableSeries.map((item) => item.segments.map((segment) => {
+        const path = segment.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" ");
         return `<path class="chart-line" d="${path}" style="stroke: ${item.color}"></path>`;
-      }).join("")}
+      }).join("")).join("")}
       ${drawableSeries.flatMap((item) => item.points.map((point) => `
         <circle class="chart-point" cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="4" style="stroke: ${item.color}">
           <title>${escapeHtml(item.label)} - ${escapeHtml(point.label)} (${escapeHtml(point.releaseDate)}): ${escapeHtml(chart.format(point.value))}</title>
         </circle>
       `)).join("")}
       ${xTicks.map((tick) => `
-        <line class="chart-date-tick" x1="${xForTime(tick.time, minTime, timeSpan, margin.left, plotWidth).toFixed(1)}" x2="${xForTime(tick.time, minTime, timeSpan, margin.left, plotWidth).toFixed(1)}" y1="${height - margin.bottom}" y2="${height - margin.bottom + 6}"></line>
+        <line class="chart-date-tick" x1="${xForTime(tick.time, minTime, timeSpan, margin.left, plotWidth).toFixed(1)}" x2="${xForTime(tick.time, minTime, timeSpan, margin.left, plotWidth).toFixed(1)}[...]
         <text class="chart-label" x="${xForTime(tick.time, minTime, timeSpan, margin.left, plotWidth).toFixed(1)}" y="${height - 24}" text-anchor="middle">${escapeHtml(tick.label)}</text>
       `).join("")}
     </svg>
