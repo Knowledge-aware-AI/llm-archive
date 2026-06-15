@@ -410,6 +410,7 @@ function renderStatistics() {
       description: state.statistics.metricDefinitions.epistemicHumility,
       value: (model) => model.metrics?.epistemicHumility,
       format: (value) => value.toFixed(1),
+      domain: [0, 10],
     },
     {
       key: "quality",
