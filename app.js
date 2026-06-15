@@ -394,6 +394,7 @@ function renderStatistics() {
       description: state.statistics.metricDefinitions.verbosity,
       value: (model) => model.metrics?.verbosity,
       format: (value) => `${Math.round(value).toLocaleString()} words`,
+      domain: [0, 2400],
     },
     {
       key: "positivity",
@@ -410,6 +411,7 @@ function renderStatistics() {
       description: state.statistics.metricDefinitions.epistemicHumility,
       value: (model) => model.metrics?.epistemicHumility,
       format: (value) => value.toFixed(1),
+      domain: [0, 10],
     },
     {
       key: "quality",
@@ -426,7 +428,7 @@ function renderStatistics() {
       description: state.statistics.metricDefinitions.sycophancy,
       value: (model) => model.metrics?.sycophancy,
       format: (value) => value.toFixed(3),
-      domain: [1, 1.45],
+      domain: [1.07, 1.42],
     },
     {
       key: "politicalAlignment",
@@ -435,7 +437,7 @@ function renderStatistics() {
       description: state.statistics.metricDefinitions.politicalAlignment,
       value: (model) => model.metrics?.politicalAlignment,
       format: (value) => value.toFixed(3),
-      domain: [4.99, 5.03],
+      domain: [4.997, 5.028],
     },
   ];
 
